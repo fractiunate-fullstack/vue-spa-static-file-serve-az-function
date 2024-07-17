@@ -33,7 +33,7 @@ export async function serve_static(request: HttpRequest, context: InvocationCont
     const mapEntry = (filename_split.length > 1) ? fileMap[`${paths[0]}/${filename_split[filename_split.length - 1]}`] : fileMap[`${paths[0]}/undefined`];
 
     if (!!mapEntry) {
-        console.log("[SERVING]:", mapEntry);
+        context.info("[SERVING]:", mapEntry);
         try {
             return { body: await fs.readFile(mapEntry.fileName), headers: { 'Content-Type': mapEntry.contentType } };
         } catch (e) {
@@ -41,7 +41,7 @@ export async function serve_static(request: HttpRequest, context: InvocationCont
             return { status: 500 };
         }
     } else {
-        console.log('[SERVING] index.html');
+        context.info('[SERVING] index.html');
         try {
             const body = await fs.readFile(`${wwwroot}/index.html`);
             return {
